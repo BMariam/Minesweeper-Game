@@ -1,3 +1,5 @@
+package minesweepergame;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -36,7 +38,7 @@ public class MinesweeperGame {
                 field.add(gameField[0].field[i][j].fieldButton);
             }
         }
-
+		
         JLabel mineCount = new JLabel("    " + Field.mine + " :  " + String.valueOf(GameField.mineCount));
         flagCount = new JLabel(Field.flag + " :  " + String.valueOf(GameField.flagCount));
         flagCount.setForeground(Color.RED);
@@ -61,35 +63,40 @@ public class MinesweeperGame {
         changeDifficulty.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for (int i = 0; i < gameField[0].field.length; ++i) {
-                    for (int j = 0; j < gameField[0].field[i].length; ++j) {
-                        field.remove(gameField[0].field[i][j].fieldButton);
-                    }
-                }
-                int i = gameField[0].field.length;
-                int j = gameField[0].field.length;
-                if (0 == changeDifficulty.getSelectedIndex()) {
-                    i = j = 8;
-                    frame.setSize(650, 475);
-                } else if (1 == changeDifficulty.getSelectedIndex()) {
-                    i = j = 16;
-                    frame.setSize(750, 500);
-                } else if (2 == changeDifficulty.getSelectedIndex()){
-                    i = j = 24;
-                    frame.setSize(1150, 700);
-                }
-                gameField[0] = new GameField(i, j);
-                centerGridLayout[0].setRows(i);
-                centerGridLayout[0].setColumns(j);
-                for (int a = 0; a < gameField[0].field.length; ++a) {
-                    for (int b = 0; b < gameField[0].field[a].length; ++b) {
-                        field.add(gameField[0].field[a][b].fieldButton);
-                    }
-                }
-                mineCount.setText("    " + Field.mine + " :  " + String.valueOf(GameField.mineCount));
-                flagCount.setText(Field.flag + " :  " + String.valueOf(GameField.flagCount));
-                field.revalidate();
-                field.repaint();
+				int height = gameField[0].field.length;
+				int weight = gameField[0].field[0].length;
+				
+				if (!((0 == changeDifficulty.getSelectedIndex() && 8 == height)
+					|| (1 == changeDifficulty.getSelectedIndex() && 16 == height)
+					|| (2 == changeDifficulty.getSelectedIndex() && 24 == height))) {
+                	for (int i = 0; i < gameField[0].field.length; ++i) {
+                    	for (int j = 0; j < gameField[0].field[i].length; ++j) {
+                        	field.remove(gameField[0].field[i][j].fieldButton);
+                    	}
+                	}
+					if (0 == changeDifficulty.getSelectedIndex()) {
+						height = weight = 8;
+						frame.setSize(650, 475);
+					} else if (1 == changeDifficulty.getSelectedIndex()) {
+						height = weight = 16;
+						frame.setSize(750, 500);
+					} else if (2 == changeDifficulty.getSelectedIndex()){
+						height = weight = 24;
+						frame.setSize(1150, 700);
+					}
+					gameField[0] = new GameField(height, weight);
+					centerGridLayout[0].setRows(height);
+					centerGridLayout[0].setColumns(weight);
+					for (int i = 0; i < gameField[0].field.length; ++i) {
+						for (int j = 0; j < gameField[0].field[i].length; ++j) {
+							field.add(gameField[0].field[i][j].fieldButton);
+						}
+					}
+					mineCount.setText("    " + Field.mine + " :  " + String.valueOf(GameField.mineCount));
+					flagCount.setText(Field.flag + " :  " + String.valueOf(GameField.flagCount));
+					field.revalidate();
+					field.repaint();
+				}
             }
         });
 

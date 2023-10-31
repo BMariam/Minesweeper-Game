@@ -1,3 +1,5 @@
+package minesweepergame;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.Color;
@@ -12,7 +14,7 @@ public class GameField {
     private int weight;
     private int height;
     private boolean isGameStopped;
-    public static int closeBoardCount;
+    public static int closedFieldCount;
     public static int flagCount;
     public static int mineCount;
 
@@ -21,10 +23,7 @@ public class GameField {
     public GameField(int weight, int height) {
         this.weight = weight;
         this.height = height;
-        this.closeBoardCount = weight * height;
-        this.mineCount = (int) (weight * height / 6.4);
-        this.flagCount = mineCount;
-        this.isGameStopped = false;
+		initialize();
 
         field = new Field[height][weight];
         for (int i = 0; i < field.length; ++i) {
@@ -63,6 +62,13 @@ public class GameField {
             }
         }
     }
+
+	private void initialize() {
+        this.closedFieldCount = weight * height;
+        this.mineCount = (int) (weight * height / 6.4);
+        this.flagCount = mineCount;
+        this.isGameStopped = false;
+	}
 
     private Set<Integer> getMines() {
         Random random = new Random();
@@ -160,7 +166,7 @@ public class GameField {
     }
 
     private void checkForWin() {
-        if (closeBoardCount == mineCount) {
+        if (closedFieldCount == mineCount) {
             isGameStopped = true;
             ImageIcon winImage = new ImageIcon(new ImageIcon(
                     "images/win.png").getImage().getScaledInstance(
@@ -178,11 +184,9 @@ public class GameField {
                 field[i][j].setIsMine(false);
             }
         }
-        this.closeBoardCount = weight * height;
-        this.mineCount = (int) (weight * height / 6.4);
-        this.flagCount = mineCount;
-        this.isGameStopped = false;
+		initialize();
         mineIndex();
         setBoardValues();
+		MinesweeperGame.flagCount.setText(Field.flag + " :  " + String.valueOf(flagCount));
     }
 }
